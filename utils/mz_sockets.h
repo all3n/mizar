@@ -54,6 +54,7 @@ int socket_connect(Socket *socket, const char *server_ip, int server_port);
 
 // common
 int socket_create(Socket *s);
+ssize_t socket_nsend(Socket *socket, const char *data, int n);
 ssize_t socket_send(Socket *socket, const char *data);
 ssize_t socket_receive(Socket *socket, char *buffer, size_t buffer_size);
 void socket_close(Socket *socket);

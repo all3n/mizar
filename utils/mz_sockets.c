@@ -1,16 +1,17 @@
 #include "mz_sockets.h"
-#include "utils.h"
 
 int socket_create(Socket *s) {
   s->sockfd = socket(AF_INET, SOCK_STREAM, 0);
   return s->sockfd;
 }
 int socket_connect(Socket *socket, const char *server_ip, int server_port) {
-  memset(&(socket->addr), 0, sizeof(socket->addr));
-  socket->addr.sin_family = AF_INET;
-  socket->addr.sin_port = htons(server_port);
-  if (inet_pton(AF_INET, server_ip, &(socket->addr.sin_addr)) <= 0) {
-    return -2;
+  if(server_ip){
+    memset(&(socket->addr), 0, sizeof(socket->addr));
+    socket->addr.sin_family = AF_INET;
+    socket->addr.sin_port = htons(server_port);
+    if (inet_pton(AF_INET, server_ip, &(socket->addr.sin_addr)) <= 0) {
+      return -2;
+    }
   }
   return connect(socket->sockfd, (struct sockaddr *)&(socket->addr),
                  sizeof(socket->addr));
@@ -35,13 +36,16 @@ int socket_accept(Socket *server_socket, Socket *client_socket) {
              &client_addr_len);
   return client_socket->sockfd;
 }
+ssize_t socket_nsend(Socket *socket, const char *data, int n) {
+  return send(socket->sockfd, data, n, 0);
+}
 
 ssize_t socket_send(Socket *socket, const char *data) {
   return send(socket->sockfd, data, strlen(data), 0);
 }
 
 ssize_t socket_receive(Socket *socket, char *buffer, size_t buffer_size) {
-  return recv(socket->sockfd, buffer, buffer_size - 1, 0);
+  return recv(socket->sockfd, buffer, buffer_size, 0);
 }
 
 void socket_close(Socket *socket) { close(socket->sockfd); }

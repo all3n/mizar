@@ -1,6 +1,7 @@
 #include "mz_service.h"
 #include "utils.h"
 #include <string.h>
+#include "../socks5.h"
 void run_client(MzOpts *opts) {
   Socket client_socket;
   bool socket_connected = false;
@@ -146,10 +147,14 @@ void *client_thread(void *arg) {
   return NULL;
 }
 
-MzSvc mzSvcs[] = {{"client", run_client}, {"server", run_server}, {NULL, NULL}};
+// extern SvcFunc run_socks5;
 void run_svc(const char *name, MzOpts *opts) {
-  if(name == NULL) {
-    return ;
+  MzSvc mzSvcs[] = {{"client", run_client},
+                    {"server", run_server},
+                    {"socks5", run_socks5},
+                    {NULL, NULL}};
+  if (name == NULL) {
+    return;
   }
   for (int i = 0; mzSvcs[i].name != NULL; i++) {
     if (!strcasecmp(mzSvcs[i].name, name)) {
