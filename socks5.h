@@ -1,8 +1,8 @@
 #ifndef _MZ_SOCKS5_H
 #define _MZ_SOCKS5_H
 // https://www.ietf.org/rfc/rfc1928.txt
-#include <stdint.h>
 #include "utils/app_def.h"
+#include <stdint.h>
 
 typedef enum {
   kMethodNoAuthentication = 0x00,
@@ -131,13 +131,13 @@ typedef struct Socks5Response {
   uint16_t dst_port;
 } Socks5Response;
 
-
 // CONNECT
 // BIND
 // UDP ASSOCIATE
 void DebugRequest(Socks5Request *request);
 void DebugResposne(Socks5Response *response);
 
-void ipv4_to_string(uint32_t ipv4, char *str, int len) ;
+void ipv4_to_string(uint32_t ipv4, char *str, int len);
 void run_socks5(MzOpts *opts);
+
 #endif

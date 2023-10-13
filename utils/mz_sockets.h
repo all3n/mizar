@@ -11,8 +11,9 @@
 #include <sys/types.h>
 #include <unistd.h>
 
+//#define BUFFER_SIZE 1024
 #define BUFFER_SIZE 1024
-#define MAX_CLIENTS 10
+#define MAX_CLIENTS 32
 
 typedef struct {
   int sockfd;

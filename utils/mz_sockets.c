@@ -5,7 +5,7 @@ int socket_create(Socket *s) {
   return s->sockfd;
 }
 int socket_connect(Socket *socket, const char *server_ip, int server_port) {
-  if(server_ip){
+  if (server_ip) {
     memset(&(socket->addr), 0, sizeof(socket->addr));
     socket->addr.sin_family = AF_INET;
     socket->addr.sin_port = htons(server_port);
@@ -48,7 +48,11 @@ ssize_t socket_receive(Socket *socket, char *buffer, size_t buffer_size) {
   return recv(socket->sockfd, buffer, buffer_size, 0);
 }
 
-void socket_close(Socket *socket) { close(socket->sockfd); }
+void socket_close(Socket *socket) {
+  if (socket->sockfd != -1) {
+    close(socket->sockfd);
+  }
+}
 
 void socket_pool_init(SocketPool *pool) {
   pool->count = 0;
